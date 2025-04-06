@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <!-- Light gray background circle -->
+    <path
+        android:fillColor="#DDDDDD"
+        android:pathData="M60,0 A60,60 0 1,1 59.9,0 Z" />
+
+    <!-- Green wedge (120° wedge) -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M60,60 L8.04,30 A60,60 0 0,1 111.96,30 Z" />
+</vector>
