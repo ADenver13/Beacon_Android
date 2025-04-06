@@ -22,6 +22,7 @@ class BluetoothScanner(
     var onDeviceFound: ((distance: Double) -> Unit)? = null
 
     // Buffer for smoothing RSSI readings
+    // TODO: Think ab buffer size, maybe < 4?
     private val rssiBuffer = mutableListOf<Int>()
     private val maxBufferSize = 4
 
@@ -34,7 +35,7 @@ class BluetoothScanner(
                     val filteredRssi = rssiBuffer.average()  // Average recent readings
                     val distance = calculateDistance(filteredRssi)
                     onDeviceFound?.invoke(distance)
-                    Log.d("BluetoothScanner", "RSSI: $rssi, Filtered RSSI: $filteredRssi, Distance: $distance meters")
+                    Log.d("BluetoothScanner", "GOT IT: RSSI: $rssi, Filtered RSSI: $filteredRssi, MAYBE Distance: $distance meters")
                 }
             }
         }
@@ -46,7 +47,7 @@ class BluetoothScanner(
 
     fun startScan() {
         val settings = ScanSettings.Builder()
-            .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+            .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY) // bad battery life but more accurate
             .setReportDelay(0L)
             .build()
         bluetoothLeScanner?.startScan(null, settings, scanCallback)
@@ -61,9 +62,7 @@ class BluetoothScanner(
     // Add RSSI measurement, trim if needed
     private fun addRssiMeasurement(rssi: Int) {
         rssiBuffer.add(rssi)
-        if (rssiBuffer.size > maxBufferSize) {
-            rssiBuffer.removeAt(0)
-        }
+        if (rssiBuffer.size > maxBufferSize) rssiBuffer.removeFirst()
     }
 
     // Log-distance path loss model

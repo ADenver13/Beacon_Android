@@ -17,10 +17,11 @@ class DeviceOrientationManager(context: Context) : SensorEventListener {
     private var accelerometerReading = FloatArray(3)
     private var magnetometerReading = FloatArray(3)
 
-    // Callback to notify when orientation (azimuth) changes.
+    // Callback when azimuth changes.
     var onOrientationChangedCallback: ((azimuth: Float) -> Unit)? = null
 
     fun start() {
+        //always be listening for device movement, get back in big arr
         accelerometer?.also {
             sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_UI)
         }
@@ -56,5 +57,7 @@ class DeviceOrientationManager(context: Context) : SensorEventListener {
         }
     }
 
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { }
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+        //Not really needed but abstract so it makes me
+    }
 }
